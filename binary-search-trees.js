@@ -90,10 +90,46 @@ function deleteItem(root, value) {
   return root;
 }
 
+function find(root, value) {
+  if (root === null) return root;
+
+  if (root.data > value) {
+    root.left = find(root.left, value);
+  } else if (root.data < value) {
+    root.right = find(root.right, value);
+  } else {
+    console.log(root);
+    return root;
+  }
+}
+
+function printValue(item) {
+  console.log(item);
+}
+
+function levelOrderForEach(root, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Function parameter is not a callback function!");
+  }
+
+  if (root === null) return;
+
+  let queue = [];
+  queue.push(root);
+  while (queue.length > 0) {
+    callback(queue[0].data);
+    if (queue[0].left) queue.push(queue[0].left);
+    if (queue[0].right) queue.push(queue[0].right);
+    queue.shift();
+  }
+}
+
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let bst = Tree(testArray);
 prettyPrint(bst.root);
 // bst = insert(bst.root, 10);
 // prettyPrint(bst);
-bst = deleteItem(bst.root, 4);
-prettyPrint(bst);
+// bst = deleteItem(bst.root, 4);
+// prettyPrint(bst);
+// find(bst.root, 5);
+levelOrderForEach(bst.root, printValue);
