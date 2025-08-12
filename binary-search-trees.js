@@ -9,6 +9,7 @@ function Node(data) {
 }
 
 function Tree(array) {
+  if (!Array.isArray(array) || array.length === 0) return null;
   let sortedArray = mergeSort(array);
   // remove duplicates as more complicated as trees harder to balance
   let filteredArray = [...new Set(sortedArray)];
@@ -42,7 +43,25 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
+function insert(root, value) {
+  //   let root = Node(value);
+
+  if (root === null) return Node(value);
+
+  if (root.data === value) return root;
+
+  if (value < root.data) {
+    console.log("left");
+    root.left = insert(root.left, value);
+  } else if (value > root.data) {
+    console.log("right");
+    root.right = insert(root.right, value);
+  }
+  return root;
+}
+
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const bst = Tree(testArray);
-console.log(bst);
+let bst = Tree(testArray);
 prettyPrint(bst.root);
+bst = insert(bst.root, 10);
+prettyPrint(bst);
