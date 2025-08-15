@@ -124,6 +124,42 @@ function levelOrderForEach(root, callback) {
   }
 }
 
+function inOrderForEach(root, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Function parameter is not a callback function!");
+  }
+
+  if (root === null) return;
+
+  inOrderForEach(root.left, callback);
+  callback(root.data);
+  inOrderForEach(root.right, callback);
+}
+
+function preOrderForEach(root, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Function parameter is not a callback function!");
+  }
+
+  if (root === null) return;
+
+  callback(root.data);
+  preOrderForEach(root.left, callback);
+  preOrderForEach(root.right, callback);
+}
+
+function postOrderForEach(root, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Function parameter is not a callback function!");
+  }
+
+  if (root === null) return;
+
+  postOrderForEach(root.left, callback);
+  postOrderForEach(root.right, callback);
+  callback(root.data);
+}
+
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let bst = Tree(testArray);
 prettyPrint(bst.root);
@@ -132,4 +168,7 @@ prettyPrint(bst.root);
 // bst = deleteItem(bst.root, 4);
 // prettyPrint(bst);
 // find(bst.root, 5);
-levelOrderForEach(bst.root, printValue);
+// levelOrderForEach(bst.root, printValue);
+// inOrderForEach(bst.root, printValue);
+// preOrderForEach(bst.root, printValue);
+postOrderForEach(bst.root, printValue);
