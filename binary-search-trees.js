@@ -90,19 +90,6 @@ function deleteItem(root, value) {
   return root;
 }
 
-// function find(root, value) {
-//   if (root === null) return root;
-
-//   if (root.data > value) {
-//     root.left = find(root.left, value);
-//   } else if (root.data < value) {
-//     root.right = find(root.right, value);
-//   } else {
-//     console.log(root);
-//     return root;
-//   }
-// }
-
 function find(root, value) {
   if (!root) return false;
 
@@ -192,6 +179,63 @@ function height(root, value) {
   return height;
 }
 
+function depth(root, value) {
+  if (root === null) return;
+
+  let curr = root;
+  let queue = [curr];
+  let depth = 0;
+
+  while (queue.length > 0) {
+    let levelSize = queue.length;
+
+    for (let i = 0; i < levelSize; i++) {
+      curr = queue.shift();
+      if (curr.data === value) {
+        console.log(depth);
+        return depth;
+      }
+      if (curr.left) queue.push(curr.left);
+      if (curr.right) queue.push(curr.right);
+    }
+    depth++;
+  }
+  return false;
+}
+
+function maxDepth(root) {
+  if (root === null) return -1;
+
+  let lHeight = maxDepth(root.left);
+  let rHeight = maxDepth(root.right);
+  return Math.max(lHeight, rHeight) + 1;
+}
+
+function isBalanced(root) {
+  let balanced = true;
+
+  preOrderForEach(root, (node) => {
+    let current = node;
+    let lDepth = maxDepth(current.left);
+    let rDepth = maxDepth(current.right);
+    let lower = Math.min(lDepth, rDepth) + 1;
+    let higher = Math.max(lDepth, rDepth) + 1;
+    if (higher - lower > 1) {
+      balanced = false;
+      return false;
+    }
+  });
+  return balanced;
+}
+
+function rebalanced(root) {
+  let balancedArray = [];
+  inOrderForEach(root, (node) => {
+    balancedArray.push(node.data);
+  });
+  return Tree(balancedArray);
+}
+
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let bst = Tree(testArray);
 prettyPrint(bst.root);
@@ -204,4 +248,5 @@ prettyPrint(bst.root);
 // inOrderForEach(bst.root, printValue);
 // preOrderForEach(bst.root, printValue);
 // postOrderForEach(bst.root, printValue);
-height(bst.root, 8);
+// height(bst.root, 8);
+depth(bst.root, 23);
