@@ -90,17 +90,27 @@ function deleteItem(root, value) {
   return root;
 }
 
-function find(root, value) {
-  if (root === null) return root;
+// function find(root, value) {
+//   if (root === null) return root;
 
-  if (root.data > value) {
-    root.left = find(root.left, value);
-  } else if (root.data < value) {
-    root.right = find(root.right, value);
-  } else {
-    console.log(root);
-    return root;
-  }
+//   if (root.data > value) {
+//     root.left = find(root.left, value);
+//   } else if (root.data < value) {
+//     root.right = find(root.right, value);
+//   } else {
+//     console.log(root);
+//     return root;
+//   }
+// }
+
+function find(root, value) {
+  if (!root) return false;
+
+  if (value === root.data) return root;
+
+  if (value > root.data) return find(root.right, value);
+
+  if (value < root.data) return find(root.left, value);
 }
 
 function printValue(item) {
@@ -114,8 +124,8 @@ function levelOrderForEach(root, callback) {
 
   if (root === null) return;
 
-  let queue = [];
-  queue.push(root);
+  let queue = [root];
+
   while (queue.length > 0) {
     callback(queue[0].data);
     if (queue[0].left) queue.push(queue[0].left);
@@ -160,6 +170,28 @@ function postOrderForEach(root, callback) {
   callback(root.data);
 }
 
+function height(root, value) {
+  let node = find(root, value);
+  console.log(node);
+  if (!node) return null;
+
+  let queue = [node];
+  let height = -1;
+
+  while (queue.length > 0) {
+    let levelSize = queue.length;
+
+    for (let i = 0; i < levelSize; i++) {
+      let curr = queue.shift();
+      if (curr.left) queue.push(curr.left);
+      if (curr.right) queue.push(curr.right);
+    }
+    height++;
+  }
+  console.log(height);
+  return height;
+}
+
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let bst = Tree(testArray);
 prettyPrint(bst.root);
@@ -171,4 +203,5 @@ prettyPrint(bst.root);
 // levelOrderForEach(bst.root, printValue);
 // inOrderForEach(bst.root, printValue);
 // preOrderForEach(bst.root, printValue);
-postOrderForEach(bst.root, printValue);
+// postOrderForEach(bst.root, printValue);
+height(bst.root, 8);
